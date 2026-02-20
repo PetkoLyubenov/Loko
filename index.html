@@ -8,167 +8,28 @@
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Source+Sans+3:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --red: #DC143C; --black: #0a0a0a; --gray: #1a1a1a; --light-gray: #2a2a2a; }
+        :root { --red: #DC143C; --black: #0a0a0a; --gray: #1a1a1a; }
         body { font-family: 'Source Sans 3', sans-serif; background: var(--black); color: white; margin: 0; padding-bottom: 80px; }
-        .header { background: var(--red); padding: 15px; text-align: center; font-family: 'Oswald', sans-serif; text-transform: uppercase; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .header { background: var(--red); padding: 15px; text-align: center; font-family: 'Oswald', sans-serif; text-transform: uppercase; position: sticky; top: 0; z-index: 1000; }
         
         .container { padding: 15px; }
         .card { background: var(--gray); border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 4px solid var(--red); }
-        .title { color: var(--red); font-family: 'Oswald', sans-serif; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .title { color: var(--red); font-family: 'Oswald', sans-serif; font-size: 1.2rem; margin-bottom: 12px; text-transform: uppercase; }
 
-        /* Мачове стил */
-        .match-info { text-align: center; padding: 10px 0; }
-        .match-teams { display: flex; justify-content: space-around; align-items: center; font-weight: bold; font-size: 1.1rem; margin-bottom: 8px; }
-        .match-details { font-size: 0.85rem; color: #aaa; }
-        .score { font-size: 1.5rem; color: var(--red); letter-spacing: 5px; }
+        /* Мачове */
+        .match-teams { display: flex; justify-content: space-around; align-items: center; font-weight: bold; margin-bottom: 5px; }
+        .score { font-size: 1.4rem; color: var(--red); }
 
-        /* Таблица стил */
+        /* Таблица */
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         th { text-align: left; color: #888; padding: 8px; border-bottom: 1px solid #333; }
         td { padding: 12px 8px; border-bottom: 1px solid #222; }
-        .loko-row { background: rgba(220, 20, 60, 0.25); font-weight: bold; }
+        .loko-row { background: rgba(220, 20, 60, 0.2); font-weight: bold; }
 
         /* Навигация */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #333; z-index: 1000; }
-        .nav-item { color: #888; text-decoration: none; font-size: 0.8rem; text-align: center; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--red); font-weight: bold; transform: scale(1.1); }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #111; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; z-index: 1000; }
+        .nav-item { color: #888; text-decoration: none; font-size: 0.75rem; text-align: center; cursor: pointer; flex: 1; }
+        .nav-item.active { color: var(--red); font-weight: bold; }
+        .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
 
-        .page { display: none; animation: fadeIn 0.3s; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
-</head>
-<body>
-
-    <div class="header">ФК Локомотив София 1929</div>
-
-    <div class="container">
-        <div id="page-home" class="page active">
-            <div class="title">⚽ Следващ мач</div>
-            <div id="next-match-card" class="card">
-                <div class="match-info">Зареждане...</div>
-            </div>
-
-            <div class="title">🏆 Последни резултати</div>
-            <div id="results-list">
-                </div>
-        </div>
-
-        <div id="page-table" class="page">
-            <div class="title">📊 Класиране - Първа Лига</div>
-            <div class="card" style="padding: 5px;">
-                <table>
-                    <thead>
-                        <tr><th>#</th><th>Отбор</th><th>М</th><th>Т</th></tr>
-                    </thead>
-                    <tbody id="standings-data">
-                        <tr><td colspan="4" style="text-align:center; padding:20px;">Зареждане...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="page-staff" class="page">
-            <div class="title">👔 Треньорски щаб</div>
-            <div class="card">
-                <div style="margin-bottom:10px; display:flex; justify-content:space-between; border-bottom:1px solid #333; padding-bottom:5px;">
-                    <span>Антон Велков</span> <b>Старши треньор</b>
-                </div>
-                <div style="margin-bottom:10px; display:flex; justify-content:space-between; border-bottom:1px solid #333; padding-bottom:5px;">
-                    <span>Юри Васев</span> <b>Помощник треньор</b>
-                </div>
-                <div style="display:flex; justify-content:space-between;">
-                    <span>Стойчо Драгов</span> <b>Треньор вратари</b>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <nav class="nav-bar">
-        <div class="nav-item active" onclick="showPage('page-home', this)">🏠 Начало</div>
-        <div class="nav-item" onclick="showPage('page-table', this)">📊 Таблица</div>
-        <div class="nav-item" onclick="showPage('page-staff', this)">👔 Щаб</div>
-    </nav>
-
-    <script>
-        const PROXY = "https://api.allorigins.win/raw?url=";
-        const BASE_API = "https://api.fclokomotivsofia.bg/api";
-
-        async function initApp() {
-            const cacheBuster = `?v=${Date.now()}`;
-            
-            try {
-                // 1. Зареждане на класиране
-                const standingsResp = await fetch(PROXY + encodeURIComponent(BASE_API + "/standings" + cacheBuster));
-                const standings = await standingsResp.json();
-                renderStandings(standings);
-
-                // 2. Зареждане на мачове
-                const fixturesResp = await fetch(PROXY + encodeURIComponent(BASE_API + "/fixtures/next?limit=1" + cacheBuster));
-                const nextMatch = await fixturesResp.json();
-                renderNextMatch(nextMatch[0]);
-
-                const resultsResp = await fetch(PROXY + encodeURIComponent(BASE_API + "/fixtures/results?limit=2" + cacheBuster));
-                const results = await resultsResp.json();
-                renderResults(results);
-
-            } catch (err) {
-                console.error("API Error", err);
-            }
-        }
-
-        function renderStandings(data) {
-            const tbody = document.getElementById('standings-data');
-            tbody.innerHTML = data.map((team, index) => `
-                <tr class="${team.name.includes('Локомотив') ? 'loko-row' : ''}">
-                    <td>${index + 1}</td>
-                    <td>${team.name}</td>
-                    <td>${team.played}</td>
-                    <td>${team.points}</td>
-                </tr>
-            `).join('');
-        }
-
-        function renderNextMatch(match) {
-            if(!match) return;
-            const date = new Date(match.date).toLocaleString('bg-BG', {day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'});
-            document.getElementById('next-match-card').innerHTML = `
-                <div class="match-info">
-                    <div class="match-teams">
-                        <span>${match.home_team.short_name || match.home_team.name}</span>
-                        <span style="color:var(--red)">VS</span>
-                        <span>${match.away_team.short_name || match.away_team.name}</span>
-                    </div>
-                    <div class="match-details">${date} ч.</div>
-                    <div class="match-details">${match.venue.name}</div>
-                </div>
-            `;
-        }
-
-        function renderResults(results) {
-            const container = document.getElementById('results-list');
-            container.innerHTML = results.map(m => `
-                <div class="card" style="border-left: 4px solid #444;">
-                    <div class="match-info">
-                        <div class="match-teams">
-                            <span>${m.home_team.short_name || m.home_team.name}</span>
-                            <span class="score">${m.home_score}:${m.away_score}</span>
-                            <span>${m.away_team.short_name || m.away_team.name}</span>
-                        </div>
-                        <div class="match-details">${new Date(m.date).toLocaleDateString('bg-BG')}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function showPage(pageId, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            el.classList.add('active');
-        }
-
-        initApp();
-    </script>
-</body>
-</html>
+        .
